@@ -42,4 +42,22 @@ public class DeviceDriverTest {
         }).isInstanceOf(ReadFailException.class)
                 .hasMessageContaining("different");
     }
+
+    @Test
+    void 미션1_Write한다() throws WriteFailException {
+        when(hardware.read(0xFF)).thenReturn((byte) 0xFF);
+        deviceDriver.write(0xFF, (byte) 10);
+        verify(hardware, times(1)).write(0xFF, (byte) 10);
+    }
+
+    @Test
+    void 미션1_Write시값이있다면예외를발생한다() {
+        when(hardware.read(0xFF)).thenReturn((byte) 10);
+        assertThatThrownBy(() -> {
+            deviceDriver.write(0xFF, (byte) 10);
+        }).isInstanceOf(WriteFailException.class)
+                .hasMessageContaining("already");
+
+        verify(hardware, times(0)).write(0xFF, (byte) 10);
+    }
 }
