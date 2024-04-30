@@ -19,20 +19,20 @@ public class DeviceDriverTest {
     }
 
     @Test
-    void 미션1_Read5번을수행한다() throws ReadFailException {
+    void 미션1_Read정상수행() throws ReadFailException {
         deviceDriver.read(0xFF);
         verify(hardware, times(5)).read(0xFF);
     }
 
     @Test
-    void 미션1_Read5번의결과를반환한다() throws ReadFailException {
+    void 미션1_Read결과를반환() throws ReadFailException {
         when(hardware.read(0xFF)).thenReturn((byte) 10);
         byte result = deviceDriver.read(0xFF);
         assertThat(result).isEqualTo((byte) 10);
     }
 
     @Test
-    void 미션1_5번의값이다르면에러를반환한다() {
+    void 미션1_Read에5번값이다르면예외() {
         when(hardware.read(0xFF))
                 .thenReturn((byte) 10)
                 .thenReturn((byte) 20);
@@ -44,14 +44,14 @@ public class DeviceDriverTest {
     }
 
     @Test
-    void 미션1_Write한다() throws WriteFailException {
+    void 미션1_Write정상수행() throws WriteFailException {
         when(hardware.read(0xFF)).thenReturn((byte) 0xFF);
         deviceDriver.write(0xFF, (byte) 10);
         verify(hardware, times(1)).write(0xFF, (byte) 10);
     }
 
     @Test
-    void 미션1_Write시값이있다면예외를발생한다() {
+    void 미션1_Write시값이있다면예외() {
         when(hardware.read(0xFF)).thenReturn((byte) 10);
         assertThatThrownBy(() -> {
             deviceDriver.write(0xFF, (byte) 10);
