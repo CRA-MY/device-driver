@@ -1,5 +1,7 @@
 public class Application {
 
+    public static final int ADDRESS_START = 0x00;
+    public static final int ADDRESS_END = 0x04;
     DeviceDriver deviceDriver;
 
     public Application(DeviceDriver deviceDriver) {
@@ -16,9 +18,7 @@ public class Application {
 
 
     public void writeAll(byte value) throws WriteFailException {
-        long addressStart = 0x00;
-        long addressEnd = 0x04;
-        for (long address = addressStart; address <= addressEnd; address++) {
+        for (long address = ADDRESS_START; address <= (long) ADDRESS_END; address++) {
             deviceDriver.write(address, value);
         }
     }
