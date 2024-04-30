@@ -3,13 +3,20 @@
  */
 public class DeviceDriver {
 
+    FlashMemoryDevice hardware;
+
     public DeviceDriver(FlashMemoryDevice hardware) {
-        // TODO: implement this method
+        this.hardware = hardware;
     }
 
-    public byte read(long address) {
-        // TODO: implement this method
-        return -1;
+    public byte read(long address) throws ReadFailException {
+        byte result = hardware.read(address);
+        for (int i = 0; i < 4; i++) {
+            if (result != hardware.read(address)) {
+                throw new ReadFailException("read different information.");
+            }
+        }
+        return result;
     }
 
     public void write(long address, byte data) {
